@@ -49,15 +49,13 @@ from polls.models import Poll, Choice
         
         
 class PollsViewsTestCase(TestCase):
+    fixtures = ['polls_views_testdata.json']
     def test_index(self):
-		poll_1=Poll.objects.create(question='Are you a student?',pub_date=datetime.datetime(2013, 11, 17, 9, 34))
-		poll_1.save()
-		choice_1=Choice.objects.create(poll=poll_1, choice_text='Yes', votes=0)
-		choice_2=Choice.objects.create(poll=poll_1, choice_text='No', votes=0)
+                   
 		
 		resp = self.client.get('/polls/')
 		self.assertEqual(resp.status_code, 200)
 		self.assertTrue('latest_poll_list' in resp.context)
-		self.assertEqual([poll.pk for poll  in resp.context['latest_poll_list']], [1])
+		self.assertEqual(([poll.pk for poll  in resp.context['latest_poll_list']]), ([5, 4, 2]))
 		
 			
